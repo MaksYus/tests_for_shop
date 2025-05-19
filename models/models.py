@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
-from fixtures.fixtures_db import Base
+from helpers.db import BASE, DB
 
-class Category(Base):
+class Category(DB, BASE):
     __tablename__ = "categories"
     
     id = Column(Integer, primary_key=True, index=True)
@@ -11,8 +11,21 @@ class Category(Base):
     
     products = relationship("Product", back_populates="category")
 
+    def __init__(self, session, data=None):
+        super().__init__(session)
+        self.name = data["name"]
 
-class Product(Base):
+    def get_first_record(self):
+        return self.get(table_name=Category, limit=1)
+
+    def insert(self, query):
+        return self.create(query_object=query)
+
+    def remove(self, condition):
+        return self.delete(table_name=Category, condition=condition)
+
+
+class Product(DB, BASE):
     __tablename__ = "products"
     
     id = Column(Integer, primary_key=True, index=True)
@@ -24,7 +37,7 @@ class Product(Base):
     category = relationship("Category", back_populates="products")
     order_items = relationship("OrderItem", back_populates="product")
 
-class Order(Base):
+class Order(DB, BASE):
     __tablename__ = "orders"
     
     id = Column(Integer, primary_key=True, index=True)
@@ -36,7 +49,7 @@ class Order(Base):
     items = relationship("OrderItem", back_populates="order")
 
 
-class OrderItem(Base):
+class OrderItem(DB, BASE):
     __tablename__ = "order_items"
     
     id = Column(Integer, primary_key=True, index=True)
