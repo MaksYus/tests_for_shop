@@ -15,13 +15,13 @@ postgre_session = DB()
 def pytest_sessionstart():
     global settings_config, postgre_session
     settings_config = get_settings()
-    if os.getenv('POSTGRES_USER') != '' and os.getenv('POSTGRES_PASSWORD') != '':
+    if os.environ['POSTGRES_USER'] != '' and os.environ['POSTGRES_PASSWORD'] != '':
         postgre_session = DB().create_session()
 
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_sessionfinish():
-    if os.getenv('POSTGRES_USER') != '' and os.getenv('POSTGRES_PASSWORD') != '':
+    if os.environ['POSTGRES_USER'] != '' and os.environ['POSTGRES_PASSWORD'] != '':
         postgre_session.close()
 
 @pytest.fixture(scope='function')

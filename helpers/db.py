@@ -1,4 +1,4 @@
-from os import getenv
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -12,9 +12,9 @@ class DB:
         self.connection = None
 
     def create_session(self):
-        self.connection = create_engine(getenv("DATABASE_URL"))
+        self.connection = create_engine(os.environ["DATABASE_URL"])
         Session = sessionmaker(
-            autocommit=False, autoflush=False, bind=self.engine)
+            autocommit=False, autoflush=False, bind=self.connection)
         return Session()
 
     def get(self, table_name: any, condition: dict, limit: int = 0, offset: int = 0):

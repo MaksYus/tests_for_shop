@@ -8,7 +8,7 @@ class BaseApi:
 
     def send_get(self, url='/'):
         try:
-            response = get(url=f'{self.api_base_url}/{url}', verify=False)
+            response = get(url=f'{self.api_base_url}{url}', verify=False)
             return response
         except Exception as e:
             print('Непредвиденная ошибка:', e)
