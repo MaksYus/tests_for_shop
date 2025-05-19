@@ -25,6 +25,11 @@ def pytest_sessionfinish():
         postgre_session.close()
 
 @pytest.fixture(scope='function')
+def get_settings_and_session_postgre():
+    return {'session':postgre_session,'settings':settings_config}
+
+# для генерации тестовых данных в базе можно использовать такой пример
+@pytest.fixture(scope='function')
 def insert_remove_category():
     random_name_category = f"generated_category_{str(uuid4())}"
     model = Category(

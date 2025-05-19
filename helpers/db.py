@@ -5,19 +5,22 @@ from sqlalchemy.ext.declarative import declarative_base
 
 BASE = declarative_base()
 
+
 class DB:
     def __init__(self, session=None):
         self.session = session
         self.connection = None
-    
+
     def create_session(self):
         self.connection = create_engine(getenv("DATABASE_URL"))
-        Session = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+        Session = sessionmaker(
+            autocommit=False, autoflush=False, bind=self.engine)
         return Session()
-    
-    def get(self, table_name: any, limit: int = 0, offset: int = 0):
+
+    def get(self, table_name: any, condition: dict, limit: int = 0, offset: int = 0):
         try:
-            result = self.session.query(table_name).limit(limit).offset(offset).all()
+            result = self.session.query(table_name).filter_by(
+                **condition).limit(limit).offset(offset).all()
             items = []
             for row in result:
                 tmp = {}
@@ -29,7 +32,7 @@ class DB:
         except BaseException as e:
             print(e.args)
             return False
-        
+
     def create(self, query_object: any):
         try:
             self.session.add(query_object)
@@ -39,7 +42,7 @@ class DB:
             print(e.args)
             self.session.rollback()
             return False
-        
+
     def create_all(self, query_object: any):
         try:
             self.session.add_all(query_object)
@@ -52,10 +55,11 @@ class DB:
             print(e.args)
             self.session.rollback()
             return False
-        
+
     def update(self, table_name: any, condition: dict, update_value: dict):
         try:
-            self.session.query(table_name).filter_by(**condition).update(update_value)
+            self.session.query(table_name).filter_by(
+                **condition).update(update_value)
             self.session.commit()
             return 'Successful updated'
         except BaseException as e:

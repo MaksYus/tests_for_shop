@@ -1,6 +1,6 @@
 from api.base_api import BaseApi
 
-class CatalogApi(BaseApi):
+class CategoryApi(BaseApi):
     def create_new_category(self, data):
         return self.send_post(url='/categories/', data=data)
     
