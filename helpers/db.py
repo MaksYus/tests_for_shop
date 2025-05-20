@@ -19,8 +19,12 @@ class DB:
 
     def get(self, table_name: any, condition: dict, limit: int = 0, offset: int = 0):
         try:
-            result = self.session.query(table_name).filter_by(
-                **condition).limit(limit).offset(offset).all()
+            if limit != 0:
+                result = self.session.query(table_name).filter_by(
+                    **condition).limit(limit).offset(offset).all()
+            else:
+                result = self.session.query(table_name).filter_by(
+                    **condition).offset(offset).all()
             items = []
             for row in result:
                 tmp = {}
