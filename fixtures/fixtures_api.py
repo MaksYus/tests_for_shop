@@ -2,7 +2,8 @@ from helpers.helpers import get_settings
 import pytest
 from requests import Session
 from api.category_api import CategoryApi
-import uuid
+from api.product_api import ProductApi
+
 
 settings_config = get_settings()
 api_session = None
@@ -22,3 +23,8 @@ def get_settings_and_session_api():
 @pytest.fixture(scope='function')
 def category_api():
     return CategoryApi(api_base_url=settings_config['API_URL'], session=api_session)
+
+
+@pytest.fixture(scope='function')
+def product_api():
+    return ProductApi(api_base_url=settings_config['API_URL'], Session=api_session)

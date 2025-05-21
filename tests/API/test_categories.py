@@ -8,8 +8,6 @@ from models.models import Category
 from helpers.db import DB
 
 
-@pytest.mark.all
-@pytest.mark.categories
 class TestCategories:
 
     @pytest.mark.parametrize("name, status_code",
