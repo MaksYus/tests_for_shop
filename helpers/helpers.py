@@ -1,6 +1,8 @@
 # тут лежат вспомогательные ф-ции
 import os
 import pytest
+import csv
+import json
 
 
 def get_settings():
@@ -23,3 +25,13 @@ def get_fixtures():
     if len(files_list) == 0:
         raise pytest.PytestWarning('Не поддерживаемый запуск')
     return files_list
+
+
+def load_test_data_csv(file_path):
+    with open(file_path, 'r') as f:
+        reader = csv.DictReader(f)
+        return list(reader)
+    
+def load_test_data_json():
+    with open('test_data.json', 'r') as f:
+        return json.load(f)

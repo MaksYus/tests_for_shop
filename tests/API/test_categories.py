@@ -17,7 +17,8 @@ class TestCategories:
                                  (None, 422),
                                  (random.randint(0, sys.maxsize-1), 200),
                                  ("", 400),
-                                 ("Электроника", 400)
+                                 ("Электроника", 400),
+                                 ("0"*(19)+f"{str(uuid4())}", 200) # в сумме длина 19 + 32 = 51
                              ])
     def test_create_category(self, name, status_code, category_api, get_settings_and_session_postgre):
 
