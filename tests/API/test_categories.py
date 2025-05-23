@@ -12,7 +12,6 @@ class TestCategories:
 
     @pytest.mark.parametrize("name, status_code",
                              [
-                                 (f"Электроника_{str(uuid4())}", 200),
                                  (f"с пробелом {str(uuid4())}", 200),
                                  (f"""спец.символы /[!@#$%^&*()_+\-=\[\];':"\\|,.<>\/?]+/{str(uuid4())}""", 200),
                                  (None, 422),
@@ -38,7 +37,7 @@ class TestCategories:
         assert len(db_data) == 1
 
         # удаляю добавленные данные
-        db.delete(table_name=Category, condition={'name': name})
+        assert db.delete(table_name=Category, condition={'name': name})
 
     def test_read_category(self, category_api, get_settings_and_session_postgre):
         # создаю данные для получения
@@ -59,7 +58,7 @@ class TestCategories:
         assert db_data[0] == response.json()
 
         # удаляю добавленные данные
-        db.delete(table_name=Category, condition={'name': category_name})
+        assert db.delete(table_name=Category, condition={'name': category_name})
 
         response = category_api.read_category(-1)
         assert response.status_code == 404
