@@ -18,7 +18,8 @@ class TestCategories:
                                  (random.randint(0, sys.maxsize-1), 200),
                                  ("", 400),
                                  ("Электроника", 400),
-                                 ("0"*(19)+f"{str(uuid4())}", 200) # в сумме длина 19 + 32 = 51
+                                 # в сумме длина 19 + 32 = 51
+                                 ("0"*(19)+f"{str(uuid4())}", 200)
                              ])
     def test_create_category(self, name, status_code, category_api, get_settings_and_session_postgre):
 
@@ -59,7 +60,8 @@ class TestCategories:
         assert db_data[0] == response.json()
 
         # удаляю добавленные данные
-        assert db.delete(table_name=Category, condition={'name': category_name})
+        assert db.delete(table_name=Category, condition={
+                         'name': category_name})
 
         response = category_api.read_category(-1)
         assert response.status_code == 404
