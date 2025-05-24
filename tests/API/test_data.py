@@ -36,13 +36,13 @@ class TestData:
         ),
         (
             {"name": ('0'*19)+f"{str(uuid4())}",
-            "description": "не существующий category_id",
+            "description": "длина name более 50",
             "price": 999.99,
             "category_id": 1}, 400
         ),
         (
-            {"name": ('0'*19)+f"{str(uuid4())}",
-            "description": "не существующий category_id",
+            {"name": f"длина description более 50{str(uuid4())}",
+            "description": ('0'*19)+f"{str(uuid4())}",
             "price": 999.99,
             "category_id": 1}, 400
         )
